@@ -1,0 +1,29 @@
+# Dependency directories
+node_modules/
+dist/
+build/
+.next/
+out/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+.venv
+env/
+ENV/
+*.joblib
+!backend/flatfoot_pipeline.joblib
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Misc
+.vercel
+.render
+frontend_old/
+Users/
+자율연구-시도2.code-workspace
