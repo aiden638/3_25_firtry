@@ -8,7 +8,7 @@ import base64
 from sklearn.cluster import KMeans
 
 try:
-    from rembg import remove as rembg_remove
+    from rembg import remove as rembg_remove, new_session
     HAS_REMBG = True
 except ImportError:
     HAS_REMBG = False
@@ -29,6 +29,15 @@ class FlatfootProcessor:
         self.N_SCAN = 5
         self.MIN_WIDTH_FRAC = 0.06
         self.UPPER_CAP_FRAC = 0.45
+
+        # Initialize rembg session if available (using slim model for lower memory)
+        self.rembg_session = None
+        if HAS_REMBG:
+            try:
+                self.rembg_session = new_session("u2net_slim")
+            except Exception as e:
+                print(f"Error initializing rembg session: {e}")
+                # Fallback to local processing if rembg fails to load
 
     def process_image(self, image_bytes):
         nparr = np.frombuffer(image_bytes, np.uint8)
@@ -128,7 +137,8 @@ class FlatfootProcessor:
             m = (alpha > 32).astype(np.uint8)*255
         elif HAS_REMBG:
             bgra = cv2.cvtColor(bgr, cv2.COLOR_BGR2BGRA)
-            out  = rembg_remove(bgra)
+            # Use the cached session if available
+            out  = rembg_remove(bgra, session=self.rembg_session)
             a    = out[:,:,3]
             m = (a > 32).astype(np.uint8)*255
         else:
