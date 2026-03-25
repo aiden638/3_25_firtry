@@ -1,11 +1,12 @@
 import { useState, useCallback, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Upload, ImageIcon, RotateCcw, AlertTriangle, CheckCircle, Info } from "lucide-react";
+import { Upload, ImageIcon, RotateCcw, AlertTriangle, CheckCircle, Info, Camera } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CountUp from "@/components/CountUp";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import CameraCapture from "@/components/CameraCapture";
 
 type RiskLevel = "정상" | "주의" | "위험";
 
@@ -61,6 +62,7 @@ const Analysis = () => {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showCamera, setShowCamera] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = useCallback((selectedFile: File) => {
@@ -215,6 +217,16 @@ const Analysis = () => {
 
           <div className="flex gap-3">
             <button
+              onClick={() => setShowCamera(true)}
+              className="pill-btn-glass flex-1 flex items-center justify-center gap-2"
+            >
+              <Camera className="h-4 w-4" />
+              직접 촬영하기
+            </button>
+          </div>
+
+          <div className="flex gap-3">
+            <button
               onClick={onAnalyze}
               disabled={!image || analyzing}
               className="pill-btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -290,6 +302,16 @@ const Analysis = () => {
             </div>
           </CardContent>
         </Card>
+      )}
+
+      {showCamera && (
+        <CameraCapture 
+          onCapture={(file) => {
+            handleFile(file);
+            setShowCamera(false);
+          }}
+          onCancel={() => setShowCamera(false)}
+        />
       )}
     </div>
   );
