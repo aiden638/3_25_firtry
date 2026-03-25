@@ -34,7 +34,7 @@ class FlatfootProcessor:
         self.rembg_session = None
         if HAS_REMBG:
             try:
-                self.rembg_session = new_session("u2net_slim")
+                self.rembg_session = new_session("u2netp")
             except Exception as e:
                 print(f"Error initializing rembg session: {e}")
                 # Fallback to local processing if rembg fails to load
