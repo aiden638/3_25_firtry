@@ -10,3 +10,4 @@ onnxruntime
 joblib
 pandas
 matplotlib
+requests

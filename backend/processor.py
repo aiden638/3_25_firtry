@@ -6,6 +6,8 @@ import joblib
 import io
 import base64
 from sklearn.cluster import KMeans
+import requests
+import json
 
 try:
     from rembg import remove as rembg_remove, new_session
@@ -131,17 +133,66 @@ class FlatfootProcessor:
             out[labels==i] = 255
         return out
 
+    def _remove_bg_via_api(self, bgr):
+        """Call remove.bg API to remove background"""
+        api_key = os.environ.get("REMOVE_BG_API_KEY")
+        if not api_key:
+            return None
+
+        # Encode image to bytes
+        _, buffer = cv2.imencode('.png', bgr)
+        img_bytes = buffer.tobytes()
+
+        try:
+            response = requests.post(
+                'https://api.remove.bg/v1.0/removebg',
+                files={'image_file': img_bytes},
+                data={'size': 'auto'},
+                headers={'X-Api-Key': api_key},
+                timeout=10
+            )
+            if response.status_code == requests.codes.ok:
+                # API returns PNG with alpha channel
+                nparr = np.frombuffer(response.content, np.uint8)
+                img_out = cv2.imdecode(nparr, cv2.IMREAD_UNCHANGED)
+                if img_out is not None and img_out.shape[2] == 4:
+                    return img_out[:, :, 3] # Return alpha channel as mask
+            else:
+                print(f"API Error: {response.status_code} - {response.text}")
+        except Exception as e:
+            print(f"Exception during API call: {e}")
+        
+        return None
+
     def mask_from_alpha_or_rembg_or_grabcut(self, bgr, alpha=None):
         H,W = bgr.shape[:2]
+        m = None
+
+        # 1. Try provided alpha
         if alpha is not None:
             m = (alpha > 32).astype(np.uint8)*255
-        elif HAS_REMBG:
-            bgra = cv2.cvtColor(bgr, cv2.COLOR_BGR2BGRA)
-            # Use the cached session if available
-            out  = rembg_remove(bgra, session=self.rembg_session)
-            a    = out[:,:,3]
-            m = (a > 32).astype(np.uint8)*255
-        else:
+        
+        # 2. Try External API if configured
+        if m is None and os.environ.get("USE_EXTERNAL_API", "false").lower() == "true":
+            alpha_api = self._remove_bg_via_api(bgr)
+            if alpha_api is not None:
+                # API result might need resizing if it returns different size
+                if alpha_api.shape[:2] != (H, W):
+                    alpha_api = cv2.resize(alpha_api, (W, H), interpolation=cv2.INTER_NEAREST)
+                m = (alpha_api > 32).astype(np.uint8)*255
+
+        # 3. Fallback to Local Rembg
+        if m is None and HAS_REMBG:
+            try:
+                bgra = cv2.cvtColor(bgr, cv2.COLOR_BGR2BGRA)
+                out  = rembg_remove(bgra, session=self.rembg_session)
+                a    = out[:,:,3]
+                m = (a > 32).astype(np.uint8)*255
+            except Exception as e:
+                print(f"Local rembg failed: {e}")
+
+        # 4. Fallback to Grabcut
+        if m is None:
             margin = max(10, int(0.05*min(H,W)))
             rect = (margin, margin, W-2*margin, H-2*margin)
             gc_mask = np.zeros((H,W), np.uint8)
