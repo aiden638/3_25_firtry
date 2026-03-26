@@ -32,14 +32,16 @@ class FlatfootProcessor:
         self.MIN_WIDTH_FRAC = 0.06
         self.UPPER_CAP_FRAC = 0.45
 
-        # Initialize rembg session if available (using slim model for lower memory)
+        # Initialize rembg session lazily if needed
         self.rembg_session = None
-        if HAS_REMBG:
-            try:
-                self.rembg_session = new_session("u2netp")
-            except Exception as e:
-                print(f"Error initializing rembg session: {e}")
-                # Fallback to local processing if rembg fails to load
+        self.use_external = os.environ.get("USE_EXTERNAL_API", "false").lower() == "true"
+        
+        if self.use_external:
+            print(">>> [Processor] Configured to use External API (remove.bg)")
+        elif HAS_REMBG:
+            print(">>> [Processor] Configured to use Local rembg")
+        else:
+            print(">>> [Processor] Falling back to GrabCut (No external API, No rembg)")
 
     def process_image(self, image_bytes):
         nparr = np.frombuffer(image_bytes, np.uint8)
@@ -173,17 +175,27 @@ class FlatfootProcessor:
             m = (alpha > 32).astype(np.uint8)*255
         
         # 2. Try External API if configured
-        if m is None and os.environ.get("USE_EXTERNAL_API", "false").lower() == "true":
+        if m is None and self.use_external:
+            print(">>> [Processor] Attempting External API removal...")
             alpha_api = self._remove_bg_via_api(bgr)
             if alpha_api is not None:
+                print(">>> [Processor] External API removal successful!")
                 # API result might need resizing if it returns different size
                 if alpha_api.shape[:2] != (H, W):
                     alpha_api = cv2.resize(alpha_api, (W, H), interpolation=cv2.INTER_NEAREST)
                 m = (alpha_api > 32).astype(np.uint8)*255
+            else:
+                print(">>> [Processor] External API removal failed! Falling back...")
 
         # 3. Fallback to Local Rembg
         if m is None and HAS_REMBG:
+            print(">>> [Processor] Attempting Local rembg removal...")
             try:
+                # Lazy initialize session if not already done
+                if self.rembg_session is None:
+                    print(">>> [Processor] Initializing local rembg session (may take a moment)...")
+                    self.rembg_session = new_session("u2netp")
+
                 bgra = cv2.cvtColor(bgr, cv2.COLOR_BGR2BGRA)
                 out  = rembg_remove(bgra, session=self.rembg_session)
                 a    = out[:,:,3]
@@ -193,6 +205,7 @@ class FlatfootProcessor:
 
         # 4. Fallback to Grabcut
         if m is None:
+            print(">>> [Processor] Falling back to GrabCut...")
             margin = max(10, int(0.05*min(H,W)))
             rect = (margin, margin, W-2*margin, H-2*margin)
             gc_mask = np.zeros((H,W), np.uint8)
