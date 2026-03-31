@@ -2,12 +2,19 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import Footer from "./Footer";
 import Dock from "./Dock";
 import StaggeredMenu from "./StaggeredMenu";
-import { Home, Activity, Clock, LogIn } from "lucide-react";
+import { Home, Activity, Clock, LogIn, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const { isLoggedIn, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   const dockItems = [
     {
@@ -26,9 +33,9 @@ const Layout = () => {
       onClick: () => navigate("/history"),
     },
     {
-      icon: <LogIn className="h-5 w-5 text-primary" />,
-      label: "로그인",
-      onClick: () => navigate("/login"),
+      icon: isLoggedIn ? <LogOut className="h-5 w-5 text-primary" /> : <LogIn className="h-5 w-5 text-primary" />,
+      label: isLoggedIn ? "로그아웃" : "로그인",
+      onClick: isLoggedIn ? handleLogout : () => navigate("/login"),
     },
   ];
 
@@ -36,7 +43,11 @@ const Layout = () => {
     { label: "홈", link: "/", onClick: () => navigate("/") },
     { label: "발 분석", link: "/analysis", onClick: () => navigate("/analysis") },
     { label: "내 기록", link: "/history", onClick: () => navigate("/history") },
-    { label: "로그인", link: "/login", onClick: () => navigate("/login") },
+    { 
+      label: isLoggedIn ? "로그아웃" : "로그인", 
+      link: isLoggedIn ? "#" : "/login", 
+      onClick: isLoggedIn ? handleLogout : () => navigate("/login") 
+    },
   ];
 
   return (

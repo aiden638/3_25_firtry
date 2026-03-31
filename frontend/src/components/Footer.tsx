@@ -4,7 +4,7 @@ import { Footprints, Mail, MapPin, Phone } from "lucide-react";
 const Footer = () => (
   <footer className="border-t bg-muted/30 pt-12 pb-24 mt-auto">
     <div className="container">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
         {/* Brand */}
         <div>
           <div className="flex items-center gap-2 mb-3">
@@ -22,21 +22,9 @@ const Footer = () => (
           <ul className="space-y-2 text-xs text-muted-foreground">
             <li><Link to="/analysis" className="hover:text-primary transition-colors">발 분석</Link></li>
             <li><Link to="/history" className="hover:text-primary transition-colors">내 기록</Link></li>
-            <li><span className="opacity-50">전문가 상담 (준비 중)</span></li>
-            <li><span className="opacity-50">맞춤 인솔 추천 (준비 중)</span></li>
           </ul>
         </div>
 
-        {/* Support */}
-        <div>
-          <h4 className="font-semibold text-sm mb-3 text-foreground">지원</h4>
-          <ul className="space-y-2 text-xs text-muted-foreground">
-            <li><a href="#" className="hover:text-primary transition-colors">자주 묻는 질문</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors">이용약관</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors">개인정보처리방침</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors">공지사항</a></li>
-          </ul>
-        </div>
 
         {/* Contact */}
         <div>
@@ -44,15 +32,15 @@ const Footer = () => (
           <ul className="space-y-2 text-xs text-muted-foreground">
             <li className="flex items-center gap-2">
               <Mail className="h-3.5 w-3.5 text-primary/60" />
-              support@footcare-ai.com
+              aiden@sasa.hs.kr
             </li>
             <li className="flex items-center gap-2">
               <Phone className="h-3.5 w-3.5 text-primary/60" />
-              02-1234-5678
+              010-9852-1246
             </li>
             <li className="flex items-center gap-2">
               <MapPin className="h-3.5 w-3.5 text-primary/60" />
-              서울특별시 강남구
+              세종과학예술영재학교
             </li>
           </ul>
         </div>

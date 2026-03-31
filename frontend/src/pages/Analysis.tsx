@@ -295,11 +295,7 @@ const Analysis = () => {
               </div>
             </div>
 
-            <div className="mt-8 pt-6 border-t text-center">
-              <button className="pill-btn-glass" disabled>
-                전문가 상담 신청 (준비 중)
-              </button>
-            </div>
+
           </CardContent>
         </Card>
       )}
