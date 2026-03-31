@@ -63,7 +63,7 @@ const Index = () => {
       </section>
 
       {/* Steps section */}
-      <section className="min-h-[100dvh] flex items-center snap-start snap-always bg-background py-16 md:py-0 pb-40 md:pb-0">
+      <section className="min-h-[100dvh] flex items-center snap-start snap-always bg-background py-16 md:py-0 pb-48 md:pb-0">
         <div className="container">
           <div className="text-center mb-8 md:mb-12">
             <p className="text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase">How it works</p>
@@ -92,7 +92,7 @@ const Index = () => {
       </section>
 
       {/* User comparison section */}
-      <section className="min-h-[100dvh] flex items-center snap-start snap-always bg-background py-16 md:py-0 pb-40 md:pb-0">
+      <section className="min-h-[100dvh] flex items-center snap-start snap-always bg-background py-16 md:py-0 pb-48 md:pb-0">
         <div className="container">
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 text-muted-foreground mb-2">
@@ -124,7 +124,7 @@ const Index = () => {
       </section>
 
       {/* CTA */}
-      <section className="min-h-[100dvh] md:h-screen flex flex-col snap-start snap-always bg-background py-16 md:py-0 pb-40 md:pb-0">
+      <section className="min-h-[100dvh] md:h-screen flex flex-col snap-start snap-always bg-background py-16 md:py-0 pb-48 md:pb-0">
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <p className="text-muted-foreground mb-4 text-sm">지금 바로 무료로 분석해 보세요</p>

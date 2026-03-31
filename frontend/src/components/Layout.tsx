@@ -12,8 +12,11 @@ const Layout = () => {
   const { isLoggedIn, logout } = useAuth();
 
   const handleLogout = () => {
-    logout();
-    navigate("/");
+    const confirmLogout = window.confirm("로그아웃 하시겠습니까?");
+    if (confirmLogout) {
+      logout();
+      navigate("/");
+    }
   };
 
   const dockItems = [
@@ -55,8 +58,8 @@ const Layout = () => {
       <StaggeredMenu items={menuItems} />
       <main className="flex-1 pb-28 md:pb-0">
         <Outlet />
+        {!isHome && <Footer />}
       </main>
-      {!isHome && <Footer />}
       <Dock items={dockItems} />
     </div>
   );
