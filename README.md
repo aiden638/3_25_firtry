@@ -21,6 +21,11 @@ cd frontend
 npm install
 npm run dev
 ```
+flatfoot_webapp에서
+git add .
+git commit -m "메세지"
+git push
+
 
 ## 주요 기능
 - **자동 배경 제거**: `rembg`를 활용하여 발 영역만 정밀하게 추출합니다.

@@ -18,9 +18,9 @@ const Index = () => {
   const { isLoggedIn } = useAuth();
 
   return (
-    <div className="h-[calc(100vh-theme(spacing.16))] overflow-y-auto snap-y snap-mandatory">
+    <div className="h-screen h-[100dvh] overflow-y-auto snap-y snap-proximity md:snap-mandatory">
       {/* Hero with Iridescence */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden snap-start snap-always">
+      <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden snap-start snap-always pb-32 md:pb-0">
         <div className="absolute inset-0">
           <Iridescence
             color={[0.2, 0.8, 0.6]}
@@ -63,11 +63,11 @@ const Index = () => {
       </section>
 
       {/* Steps section */}
-      <section className="h-screen flex items-center snap-start snap-always bg-background">
+      <section className="min-h-[100dvh] flex items-center snap-start snap-always bg-background py-16 md:py-0 pb-40 md:pb-0">
         <div className="container">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8 md:mb-12">
             <p className="text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase">How it works</p>
-            <h2 className="text-xl font-bold mt-2">이용 방법</h2>
+            <h2 className="text-2xl font-bold mt-2">이용 방법</h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
@@ -78,13 +78,13 @@ const Index = () => {
             ].map((item) => (
               <div
                 key={item.step}
-                className="flex flex-col items-center text-center gap-3 p-6 rounded-2xl bg-card border border-border shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+                className="flex flex-col items-center text-center gap-2 md:gap-3 p-4 md:p-6 rounded-2xl bg-card border border-border shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
               >
-                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <span className="text-lg font-bold text-primary">{item.step}</span>
+                <div className="h-10 w-10 md:h-12 md:w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <span className="text-base md:text-lg font-bold text-primary">{item.step}</span>
                 </div>
-                <h3 className="font-bold text-base">{item.title}</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                <h3 className="font-bold text-sm md:text-base">{item.title}</h3>
+                <p className="text-[11px] md:text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -92,14 +92,14 @@ const Index = () => {
       </section>
 
       {/* User comparison section */}
-      <section className="h-screen flex items-center snap-start snap-always bg-background">
+      <section className="min-h-[100dvh] flex items-center snap-start snap-always bg-background py-16 md:py-0 pb-40 md:pb-0">
         <div className="container">
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 text-muted-foreground mb-2">
               <Users className="h-4 w-4" />
               <span className="text-[10px] font-bold tracking-[0.2em] uppercase">Community</span>
             </div>
-            <h2 className="text-xl font-bold">다른 사용자들과 비교해 보세요</h2>
+            <h2 className="text-2xl font-bold">다른 사용자들과 비교해 보세요</h2>
             <p className="text-muted-foreground mt-2 text-sm max-w-md mx-auto">
               로그인 후 나의 평발 위험도를 다른 사용자들과 비교하고 개선 추이를 확인하세요.
             </p>
@@ -124,7 +124,7 @@ const Index = () => {
       </section>
 
       {/* CTA */}
-      <section className="h-screen flex flex-col snap-start snap-always bg-background">
+      <section className="min-h-[100dvh] md:h-screen flex flex-col snap-start snap-always bg-background py-16 md:py-0 pb-40 md:pb-0">
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <p className="text-muted-foreground mb-4 text-sm">지금 바로 무료로 분석해 보세요</p>

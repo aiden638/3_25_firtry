@@ -53,7 +53,7 @@ const Layout = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <StaggeredMenu items={menuItems} />
-      <main className="flex-1">
+      <main className="flex-1 pb-28 md:pb-0">
         <Outlet />
       </main>
       {!isHome && <Footer />}

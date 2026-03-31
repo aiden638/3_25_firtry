@@ -39,13 +39,13 @@ const getLevelAndDescription = (score: number) => {
 const generateDummyResult = (): AnalysisResult => {
   const score = Math.floor(Math.random() * 100);
   const { level, description } = getLevelAndDescription(score);
-  return { 
-    score, 
-    level, 
-    description, 
-    annotatedImage: "", 
-    leftAngle: 0, 
-    rightAngle: 0 
+  return {
+    score,
+    level,
+    description,
+    annotatedImage: "",
+    leftAngle: 0,
+    rightAngle: 0
   };
 };
 
@@ -99,7 +99,7 @@ const Analysis = () => {
     formData.append('file', file);
 
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-    
+
     try {
       const response = await fetch(`${apiBaseUrl}/predict`, {
         method: 'POST',
@@ -113,7 +113,7 @@ const Analysis = () => {
 
       const data = await response.json();
       const { level, description } = getLevelAndDescription(data.prediction_percent);
-      
+
       const newResult: AnalysisResult = {
         score: Math.round(data.prediction_percent),
         level,
@@ -139,7 +139,7 @@ const Analysis = () => {
               description: newResult.description,
             }
           ]);
-        
+
         if (saveError) {
           console.error("Error saving history:", saveError);
           // Don't throw here, just log it so the user still sees their result
@@ -301,7 +301,7 @@ const Analysis = () => {
       )}
 
       {showCamera && (
-        <CameraCapture 
+        <CameraCapture
           onCapture={(file) => {
             handleFile(file);
             setShowCamera(false);
