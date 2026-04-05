@@ -557,8 +557,8 @@ class FlatfootProcessor:
 
         X = np.array([[
             left_angle, right_angle, mean_angle, diff_angle,
-            dist_MH, slope_MH, tibia_len, tibia_slope, M_x_rel, M_y_rel
+            slope_MH, tibia_slope
         ]])
         
-        cols = ["left_angle", "right_angle", "mean_angle", "diff_angle", "dist_MH", "slope_MH", "tibia_len", "tibia_slope", "M_x_rel", "M_y_rel"]
+        cols = ["left_angle", "right_angle", "mean_angle", "diff_angle", "slope_MH", "tibia_slope"]
         return pd.DataFrame(X, columns=cols)

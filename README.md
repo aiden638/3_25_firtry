@@ -2,6 +2,9 @@
 
 이 프로젝트는 발 사진을 분석하여 평발 여부를 진단하고 특징점(거골점, 종골점, 하지축)을 시각화하는 웹 애플리케이션입니다.
 
+> [!TIP]
+> 프로젝트의 상세한 목적, 기술적 파이프라인, 개발 과정은 [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)에서 확인하실 수 있습니다.
+
 ## 기술 스택
 - **Backend**: FastAPI, OpenCV, Scikit-learn, Rembg, Joblib
 - **Frontend**: Vite + React, Vanilla CSS (Premium Dark Theme)

@@ -19,9 +19,7 @@ def verify():
     # Feature names from training script
     feature_cols = [
         "left_angle", "right_angle", "mean_angle", "diff_angle",
-        "dist_MH", "slope_MH",
-        "tibia_len", "tibia_slope",
-        "M_x_rel", "M_y_rel"
+        "slope_MH", "tibia_slope"
     ]
 
     # Dummy data (Sample from non-flatfoot logic)
@@ -31,12 +29,8 @@ def verify():
         "right_angle": [5.0],
         "mean_angle": [5.0],
         "diff_angle": [0.0],
-        "dist_MH": [150.0],
         "slope_MH": [10.0],
-        "tibia_len": [300.0],
-        "tibia_slope": [-5.0],
-        "M_x_rel": [0.5],
-        "M_y_rel": [0.7]
+        "tibia_slope": [-5.0]
     }
     
     df_test = pd.DataFrame(dummy_data)
